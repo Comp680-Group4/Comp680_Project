@@ -2,10 +2,11 @@ import praw
 import pandas as pd
 import datetime as dt
 import sys
+from datetime import datetime
 
 
 search_term='movies'
-keyword='coming'
+keyword='official'
 
 if (len(sys.argv)>1):
     search_term=(sys.argv[1])
@@ -28,4 +29,5 @@ for submission in resp:
     print ("  Title: ",submission.title)
     print ("  Score: ",submission.score)
     print ("  URL: ",submission.url)
+    print ("time:" , datetime.fromtimestamp(submission.created_utc))
     print ("  Text: ",submission.selftext[:120])
