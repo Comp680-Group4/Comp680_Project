@@ -17,7 +17,23 @@ myButton = Button(root, text="Click me!", padx=50, pady=50, command=myClick, fg=
 
 
 myLabel1.grid(row=0, column=0)
+
 myButton.grid(row=2, column=0)
 e.grid(row=3, column=0)
+
+
+def createNewWindow():
+    newWindow = Toplevel(root)
+    newWindow.geometry("400x400")
+    lbl = Label(newWindow, text = "Enter submission name:").grid(row=0,column=0)
+    entry = Entry(newWindow, width=30, borderwidth=5).grid(row=0,column=1)
+
+    bttnClear = Button(newWindow, text = "Clear").grid(row=1,column=1)
+    bttnSearch = Button(newWindow, text = "Search").grid(row=1,column=2)
+    bttnCancel = Button(newWindow, text = "Cancel").grid(row=1,column=3)
+
+buttonExample = Button(root,
+                       text="Search a keyword in subreddit",
+                       command=createNewWindow).grid(row=4, column=0)
 
 root.mainloop()

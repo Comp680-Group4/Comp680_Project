@@ -18,4 +18,4 @@ for submission in subreddit.hot(limit=5):
 
 ## making it read only
 text_area.configure(state="disabled")
-root.mainloop()
+root.newWindow()
