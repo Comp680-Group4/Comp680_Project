@@ -9,4 +9,10 @@ subreddit = reddit.subreddit('python')
 hot_python = subreddit.hot(limit=5)
 
 for submission in hot_python:
-    print(submission)
+    if not submission.stickied:
+        print('Title: {}, Ups: {}, Downs: {}, Have we visited: {}\n'.format(submission.title,
+                                                                          submission.ups,
+                                                                          submission.downs,
+                                                                          submission.visited))
+
+        comments = submission.comments
