@@ -1,39 +1,47 @@
 from tkinter import *
 
-
 root = Tk()
+root.title('User Behaviour Tracking on Reddit')
+root.geometry("400x600")
 
-e = Entry(root, width=50, borderwidth=5)
-e.insert(0, "Enter Your Name: ")
-
-def myClick():
-    myLabel1 = Label(root, text= e.get())
-    myLabel1.grid(row=0, column=0)
-
-
-#Creating a Label Widget
-myLabel1 = Label(root, text="")
-myButton = Button(root, text="Click me!", padx=50, pady=50, command=myClick, fg="blue", bg="purple")
+def createNewWindowActivityTracking():
+    global editor
+    editor = Tk()
+    editor.title('Track User Activity')
+    editor.geometry("400x600")
 
 
-myLabel1.grid(row=0, column=0)
-
-myButton.grid(row=2, column=0)
-e.grid(row=3, column=0)
 
 
-def createNewWindow():
-    newWindow = Toplevel(root)
-    newWindow.geometry("400x400")
-    lbl = Label(newWindow, text = "Enter submission name:").grid(row=0,column=0)
-    entry = Entry(newWindow, width=30, borderwidth=5).grid(row=0,column=1)
+    root.destroy()
 
-    bttnClear = Button(newWindow, text = "Clear").grid(row=1,column=1)
-    bttnSearch = Button(newWindow, text = "Search").grid(row=1,column=2)
-    bttnCancel = Button(newWindow, text = "Cancel").grid(row=1,column=3)
+def createNewWindowKeyWordUsage():
+    global editor
+    editor = Tk()
+    editor.title('Track User Keyword Usage')
+    editor.geometry("400x300")
 
-buttonExample = Button(root,
-                       text="Search a keyword in subreddit",
-                       command=createNewWindow).grid(row=4, column=0)
+    usernameLabel = Label(editor, text = "Enter Username:").grid(row=0,column=0)
+    usernameEntry = Entry(editor, width=30, borderwidth=5).grid(row=0,column=1)
+
+    numWords = Label(editor, text="Enter Number of Words to Track:").grid(row=1, column=0)
+    numWordsEntry = Entry(editor, width=30, borderwidth=5).grid(row=1, column=1)
+
+    bttnClear = Button(editor, text = "Clear").grid(row=1,column=1)
+    bttnSearch = Button(editor, text = "Search").grid(row=1,column=2)
+    bttnCancel = Button(editor, text = "Cancel").grid(row=1,column=3)
+
+    root.destroy()
+
+# Create Button Labels
+labelKeywordUsage = Label(root, text="Track User Keyword Usage")
+labelKeywordUsage.grid(row=0, column=0, padx = 20)
+labelUserActivity = Label(root, text="Track User Activity")
+labelUserActivity.grid(row=0, column=1, padx=20)
+
+# Create Buttons to open up new window - will track keyword usage on user
+buttonKeywordUsage = Button(root, text="Click Me!", command=createNewWindowKeyWordUsage).grid(row=4, column=0)
+buttonUserActivity = Button(root, text="Click Me!", command=createNewWindowActivityTracking).grid(row=4, column=1)
+
 
 root.mainloop()
