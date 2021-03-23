@@ -19,18 +19,13 @@ def createNewWindowKeyWordUsage():
     global editor
     editor = Tk()
     editor.title('Track User Keyword Usage')
-    editor.geometry("400x300")
+    editor.geometry("600x300")
 
     usernameLabel = Label(editor, text = "Enter Username:").grid(row=0,column=0)
     usernameEntry = Entry(editor, width=30, borderwidth=5).grid(row=0,column=1)
 
     numWords = Label(editor, text="Enter Number of Words to Track:").grid(row=1, column=0)
     numWordsEntry = Entry(editor, width=30, borderwidth=5).grid(row=1, column=1)
-
-    bttnClear = Button(editor, text = "Clear").grid(row=1,column=1)
-    bttnSearch = Button(editor, text = "Search").grid(row=1,column=2)
-    bttnCancel = Button(editor, text = "Cancel").grid(row=1,column=3)
-
     root.destroy()
 
 # Create Button Labels
