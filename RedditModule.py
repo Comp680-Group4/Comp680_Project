@@ -25,7 +25,7 @@ class Reddit:
             category = subreddit.controversial(limit = submissionLimit)
         elif subredditCategory == "top":
             category = subreddit.top(limit = submissionLimit)
-        i = 0
+
         for submission in category:
             if not submission.stickied:
                 print('Title: {}, Ups: {}, Downs: {}, Have we visited: {}\n'.format(submission.title,
