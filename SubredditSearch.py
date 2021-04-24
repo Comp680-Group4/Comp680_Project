@@ -1,7 +1,7 @@
 import praw
 
 
-class Reddit:
+class SubredditSearch:
     def __init__(self, clientID, clientSecret, username, password, userAgent):
         self.clientID = clientID
         self.clientSecret = clientSecret
@@ -49,15 +49,3 @@ class Reddit:
     def searchUserDataInSubreddit(self):
         print("Not implemented yet")
 
-    #This will take in all the user data, a number of "words", and then track how many times user has used those
-    #   specific words in all posts they have made on reddit ever.
-    #Out put will be a pie graph denoting precentages of how often they
-    #   have used those words relative to the other words
-    def searchTrackUserKeywordUsage(self):
-        print("Not implemented yet")
-
-    #This will take in all user data, a timeframe - (for simplicity, a number of days, which will be the X-axis on outputted histogram)
-    #   Will count how many times user has posted on each of those days going back from current day to N (Number of days passed in)
-    #   Will output a bar graph or histogram with each bar representing how many times the user has posted on that day
-    def trackUserActivityOverTimeframe(self, numberDays):
-        print("Not implemented yet")
