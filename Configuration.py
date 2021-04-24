@@ -4,10 +4,6 @@ import UserKeywordUsage
 import UserActivityTracker
 
 
-
-
-
-
 def loginToRedditAccount(clientID, clientSecret, username, password, userAgent, functionToRun):
     ### If any user fields are empty, don't attempt to execute
     if(not(len(clientID) > 0) or not(len(clientSecret) > 0) or not(len(username) > 0) or not(len(password) > 0) or not(len(userAgent) > 0)):
@@ -22,9 +18,28 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
     global editor
     editor = Tk()
     editor.title('Track User Keyword Usage')
-    editor.geometry("600x300")
+    editor.geometry("1000x600")
 
-    print("HEREEEEE!!")
+    userToTrack = Label(editor, text="Username to Track").grid(row=0, column=0)
+    usertoTrackEntry = Entry(editor, width=30, borderwidth=5)
+    usertoTrackEntry.grid(row=0, column=1)
+    usertoTrackEntry.insert(0, "")
+
+    global i
+    i = 0
+    listWordBoxes = []
+
+    def createNewTextBox(ind):
+        keyword = Entry(editor, width=30, borderwidth=5)
+        keyword.grid(row=ind, column=3)
+        keyword.insert(0, "")
+        listWordBoxes.append(keyword)
+        global i
+        i += 1
+
+
+    buttonKeywordUsage = Button(editor, text="+",
+                                command= lambda: createNewTextBox(i)).grid(row=1, column=2)
 
 
 
@@ -113,9 +128,9 @@ labelTrackSubmissionActivity.grid(row=0, column=2, padx=20)
 # Create Buttons to open up new window - will track keyword usage on user
 buttonKeywordUsage = Button(root, text="Click Me!",
                     command=lambda: loginToRedditAccount(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get()),
-                    createNewWindowKeyWordUsage)).grid(row=4, column=0)
-buttonUserActivity = Button(root, text="Click Me!", command=createNewWindowActivityTracking).grid(row=4, column=1)
-buttonSubmissionActivity = Button(root, text="Click Me!", command=createNewWindowSubredditActivity).grid(row=4, column=2)
+                    createNewWindowKeyWordUsage), bg="brown").grid(row=4, column=0)
+buttonUserActivity = Button(root, text="Click Me!", command=createNewWindowActivityTracking, bg="brown").grid(row=4, column=1)
+buttonSubmissionActivity = Button(root, text="Click Me!", command=createNewWindowSubredditActivity, bg="brown").grid(row=4, column=2)
 
 clientIdLabel = Label(root, text="Enter Client ID:").grid(row=8, column=0)
 clientIdEntry = Entry(root, width=30, borderwidth=5)
