@@ -3,8 +3,6 @@ import praw
 import SubredditSearch
 import UserKeywordUsage
 import UserActivityTracker
-from entryValidate import searchButton
-
 
 def loginToRedditAccount(clientID, clientSecret, username, password, userAgent, functionToRun):
     ### If any user fields are empty, don't attempt to execute
@@ -72,13 +70,12 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
         reddit.searchUserDataInSubreddit()
         reddit.searchUserExists(str(usertoTrackEntry.get()))
 
-        global userExistLabel
-        userExistLabel= Label(editor, text=" ").grid(row=1, column=0)
-        if (reddit.userExists == False):
+        userExistLabel= Label(editor, text=" ")
+        userExistLabel.grid(row=1, column=0)
 
+        if (reddit.userExists == False):
             userExistLabel.configure(text="User not found.")
         else:
-
             userExistLabel.configure(text="User exists.")
 
 
