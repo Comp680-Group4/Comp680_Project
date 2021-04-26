@@ -20,7 +20,7 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
     editor.title('Track User Keyword Usage')
     editor.geometry("1000x600")
 
-    userToTrack = Label(editor, text="Username to Track").grid(row=0, column=0)
+    userToTrackLabel = Label(editor, text="Username to Track").grid(row=0, column=0)
     usertoTrackEntry = Entry(editor, width=30, borderwidth=5)
     usertoTrackEntry.grid(row=0, column=1)
     usertoTrackEntry.insert(0, "")
@@ -37,10 +37,16 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
         global i
         i += 1
 
+    def executeTracking():
+        reddit = UserKeywordUsage.UserKeywordUsage(clientID, clientSecret, username, password, userAgent, str(usertoTrackEntry.get()))
+        reddit.searchTrackUserKeywordUsage()
+
 
     buttonKeywordUsage = Button(editor, text="+",
                                 command= lambda: createNewTextBox(i)).grid(row=1, column=2)
 
+    buttonExecuteTracking = Button(editor, text="Track Keywords:",
+                                command= executeTracking).grid(row=2, column=5)
 
 
     root.destroy()
