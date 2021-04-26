@@ -1,7 +1,9 @@
 from tkinter import *
+import praw
 import SubredditSearch
 import UserKeywordUsage
 import UserActivityTracker
+from entryValidate import searchButton
 
 
 def loginToRedditAccount(clientID, clientSecret, username, password, userAgent, functionToRun):
@@ -53,10 +55,36 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
 
 def createNewWindowActivityTracking(clientID, clientSecret, username, password, userAgent):
     #2nd Button in main window
+
     global editor
     editor = Tk()
     editor.title('Track User Activity')
     editor.geometry("400x600")
+
+    userToTrack = Label(editor, text="Username to Track").grid(row=0, column=0)
+    usertoTrackEntry = Entry(editor, width=30, borderwidth=5)
+    usertoTrackEntry.grid(row=0, column=1)
+    usertoTrackEntry.insert(0, "")
+
+    def executeTracking():
+        reddit =SubredditSearch.SubredditSearch(clientID, clientSecret, username, password, userAgent)
+
+        reddit.searchUserDataInSubreddit()
+        reddit.searchUserExists(str(usertoTrackEntry.get()))
+
+        global userExistLabel
+        userExistLabel= Label(editor, text=" ").grid(row=1, column=0)
+        if (reddit.userExists == False):
+
+            userExistLabel.configure(text="User not found.")
+        else:
+
+            userExistLabel.configure(text="User exists.")
+
+
+    searchButton = Button(editor,text = "Search user", command= executeTracking())
+    searchButton.grid(row=2,column=1)
+
     root.destroy()
 
 def createNewWindowSubredditActivity(clientID, clientSecret, username, password, userAgent):
@@ -135,7 +163,8 @@ labelTrackSubmissionActivity.grid(row=0, column=2, padx=20)
 buttonKeywordUsage = Button(root, text="Click Me!",
                     command=lambda: loginToRedditAccount(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get()),
                     createNewWindowKeyWordUsage), bg="brown").grid(row=4, column=0)
-buttonUserActivity = Button(root, text="Click Me!", command=createNewWindowActivityTracking, bg="brown").grid(row=4, column=1)
+buttonUserActivity = Button(root, text="Search!", command=lambda: createNewWindowActivityTracking(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get())
+                                                                                          ), bg="brown").grid(row=4, column=1)
 buttonSubmissionActivity = Button(root, text="Click Me!", command=createNewWindowSubredditActivity, bg="brown").grid(row=4, column=2)
 
 clientIdLabel = Label(root, text="Enter Client ID:").grid(row=8, column=0)
