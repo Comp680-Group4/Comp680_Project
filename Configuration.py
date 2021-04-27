@@ -69,23 +69,19 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
     usertoTrackEntry = Entry(editor, width=30, borderwidth=5)
     usertoTrackEntry.grid(row=0, column=1)
     usertoTrackEntry.insert(0, "")
+    userExistLabel = Label(editor, text=" ")
+    userExistLabel.grid(row=1, column=0)
 
     def executeTracking():
         reddit =SubredditSearch.SubredditSearch(clientID, clientSecret, username, password, userAgent)
+        userExists=reddit.searchUserExists(str(usertoTrackEntry.get()))
 
-        reddit.searchUserDataInSubreddit()
-        reddit.searchUserExists(str(usertoTrackEntry.get()))
-
-        userExistLabel= Label(editor, text=" ")
-        userExistLabel.grid(row=1, column=0)
-
-        if (reddit.userExists == False):
+        if (userExists == False):
             userExistLabel.configure(text="User not found.")
         else:
             userExistLabel.configure(text="User exists.")
 
-
-    searchButton = Button(editor,text = "Search user", command= executeTracking())
+    searchButton = Button(editor,text = "Search user", command= executeTracking)
     searchButton.grid(row=2,column=1)
 
     root.destroy()
