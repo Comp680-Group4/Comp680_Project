@@ -38,8 +38,14 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
         i += 1
 
     def executeTracking():
+        wordsDict = {}
+        for w in listWordBoxes:
+            wordsDict[str(w.get())] = 0
+            #listWords.append(str(w.get()))
+
         reddit = UserKeywordUsage.UserKeywordUsage(clientID, clientSecret, username, password, userAgent, str(usertoTrackEntry.get()))
-        reddit.searchTrackUserKeywordUsage()
+        reddit.searchTrackUserKeywordUsage(wordsDict)
+
 
 
     buttonKeywordUsage = Button(editor, text="+",
