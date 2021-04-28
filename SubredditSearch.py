@@ -23,6 +23,18 @@ class SubredditSearch:
         userExists=True
         return userExists
 
+    def searchSubredditExists(self, subreddit):
+        #subredditExists= False
+        exists = False
+        try:
+            reddit = praw.Reddit('reddit-configuration-bot1')
+            reddit.subreddits.search_by_name(subreddit, exact=True)
+        except NotFound:
+            exists = False
+            return exists
+        exists= True
+        return exists
+
         #print("reddit.Exists in subsearch:", reddit.userExists)
 
         ####TODO - add in fields for the user data that we're trying to track
