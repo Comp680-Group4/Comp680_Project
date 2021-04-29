@@ -167,7 +167,7 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
 
 ####SEVAK PART - will call into UserActivityTracker Class - track how many times users post over past X days.
 #### UserActivityTracker needs to output a bar graph/histogram type graph to visually show this data
-def createNewWindowTrackUserActivity(clientID, clientSecret, username, password, userAgent):
+def createNewWindowTrackUserActivityOverTime(clientID, clientSecret, username, password, userAgent):
     #3rd Button in main window
     global editor
     editor = Tk()
@@ -190,9 +190,9 @@ root.geometry("600x400")
 # Create Button Labels
 labelKeywordUsage = Label(root, text="Track User Keyword Usage")
 labelKeywordUsage.grid(row=0, column=0, padx = 20)
-labelUserActivity = Label(root, text="Track User Activity")
+labelUserActivity = Label(root, text="Track User Activity in Subreddit")
 labelUserActivity.grid(row=0, column=1, padx=20)
-labelTrackSubmissionActivity = Label(root, text="Track A Single Submission")
+labelTrackSubmissionActivity = Label(root, text="Track User Activity Over Time")
 labelTrackSubmissionActivity.grid(row=0, column=2, padx=20)
 
 # Create Buttons to open up new window - will track keyword usage on user
@@ -201,7 +201,7 @@ buttonKeywordUsage = Button(root, text="Click Me!",
                     createNewWindowKeyWordUsage), bg="brown").grid(row=4, column=0)
 buttonUserActivity = Button(root, text="Search!", command=lambda: createNewWindowActivityTracking(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get())
                                                                                           ), bg="brown").grid(row=4, column=1)
-buttonSubmissionActivity = Button(root, text="Click Me!", command=createNewWindowSubredditActivity, bg="brown").grid(row=4, column=2)
+buttonSubmissionActivity = Button(root, text="Click Me!", command=lambda: createNewWindowTrackUserActivityOverTime(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get())), bg="brown").grid(row=4, column=2)
 
 clientIdLabel = Label(root, text="Enter Client ID:").grid(row=8, column=0)
 clientIdEntry = Entry(root, width=30, borderwidth=5)
