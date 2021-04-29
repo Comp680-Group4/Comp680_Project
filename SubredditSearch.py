@@ -2,9 +2,6 @@ import praw
 from tkinter import *
 from prawcore.exceptions import NotFound
 
-
-
-
 class SubredditSearch:
     def __init__(self, clientID, clientSecret, username, password, userAgent):
         self.clientID = clientID
@@ -12,19 +9,33 @@ class SubredditSearch:
         self.username = username
         self.password = password
         self.userAgent = userAgent
-        self.userExists= False
         self.reddit = praw.Reddit(client_id = self.clientID, client_secret = self.clientSecret, username = self.username, password = self.password, user_agent = self.userAgent)
 
     def searchUserExists(self, username):
-
+        userExists=False
         try:
-            self.reddit.user
+            reddit = praw.Reddit('reddit-configuration-bot1')
+            reddit.redditor(username).id
+            #self.reddit.user
         except NotFound:
-            self.userExists=False
-            print("false")
-        self.userExists=True
+            userExists=False
+            return userExists
+        userExists=True
+        return userExists
 
+    def searchSubredditExists(self, subreddit):
+        #subredditExists= False
+        exists = False
+        try:
+            reddit = praw.Reddit('reddit-configuration-bot1')
+            reddit.subreddits.search_by_name(subreddit, exact=True)
+        except NotFound:
+            exists = False
+            return exists
+        exists= True
+        return exists
 
+        #print("reddit.Exists in subsearch:", reddit.userExists)
 
         ####TODO - add in fields for the user data that we're trying to track
         #self.usernameToTrack
@@ -62,6 +73,4 @@ class SubredditSearch:
     #   and it will output all posts that user has posted in that specific subreddit
     def searchUserDataInSubreddit(self):
         print("Not implemented yet")
-
-
 

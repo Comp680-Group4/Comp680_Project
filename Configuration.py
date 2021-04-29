@@ -1,5 +1,7 @@
 from tkinter import *
 import praw
+from tkinter import scrolledtext
+from numpy.distutils.tests.test_exec_command import emulate_nonposix
 import SubredditSearch
 import UserKeywordUsage
 import UserActivityTracker
@@ -73,28 +75,93 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
     editor.title('Track User Activity')
     editor.geometry("400x600")
 
-    userToTrack = Label(editor, text="Username to Track").grid(row=0, column=0)
+    userToTrack = Label(editor, text="Username To Track:").grid(row=0, column=0)
     usertoTrackEntry = Entry(editor, width=30, borderwidth=5)
     usertoTrackEntry.grid(row=0, column=1)
     usertoTrackEntry.insert(0, "")
+    userExistLabel = Label(editor, text="")
+    userExistLabel.grid(row=1, column=0)
 
-    def executeTracking():
-        reddit =SubredditSearch.SubredditSearch(clientID, clientSecret, username, password, userAgent)
+    def executeUserTracking():
+        if(len(usertoTrackEntry.get())!=0):
 
-        reddit.searchUserDataInSubreddit()
-        reddit.searchUserExists(str(usertoTrackEntry.get()))
+            reddit =SubredditSearch.SubredditSearch(clientID, clientSecret, username, password, userAgent)
+            userExists=reddit.searchUserExists(str(usertoTrackEntry.get()))
 
-        userExistLabel= Label(editor, text=" ")
-        userExistLabel.grid(row=1, column=0)
-
-        if (reddit.userExists == False):
-            userExistLabel.configure(text="User not found.")
+            if (userExists == False):
+                userExistLabel.configure(text="User not found.", fg="#AEB6BF")
+            else:
+                userExistLabel.configure(text="User exists.", fg="#AEB6BF")
         else:
-            userExistLabel.configure(text="User exists.")
+            userExistLabel.configure(text="Please Enter Username.",fg="#AEB6BF" )
 
 
-    searchButton = Button(editor,text = "Search user", command= executeTracking())
-    searchButton.grid(row=2,column=1)
+    searchButtonUser = Button(editor,text = "Search user", command= executeUserTracking)
+    searchButtonUser.grid(row=2,column=1)
+
+    emptyLabel= Label(editor, text="")
+    emptyLabel.grid(row=3, column=0)
+    subredditLabel = Label(editor, text="Subreddit To Search:")
+    subredditLabel.grid(row=4, column=0)
+    subredditTrackEntry = Entry (editor, width=30, borderwidth=5)
+    subredditTrackEntry.grid(row=4, column=1)
+    subredditTrackEntry.insert(0, "")
+    subredditExistsLabel =Label (editor,text="")
+    subredditExistsLabel.grid(row=5, column=0)
+
+
+    def executeSubredditTracking():
+        if (len(subredditTrackEntry.get()) != 0):
+
+            reddit = SubredditSearch.SubredditSearch(clientID, clientSecret, username, password, userAgent)
+            subredditExists = reddit.searchSubredditExists(str(subredditTrackEntry.get()))
+
+            if (subredditExists == False):
+                subredditExistsLabel.configure(text="Subreddit not found.", fg="#AEB6BF")
+            else:
+                subredditExistsLabel.configure(text="Subreddit exists.", fg="#AEB6BF")
+        else:
+            subredditExistsLabel.configure(text="Please Enter Subreddit.", fg="#AEB6BF")
+
+    searchButtonSubreddit = Button(editor , text= "Search Subreddit", command = executeSubredditTracking)
+    searchButtonSubreddit.grid(row=6, column = 1)
+
+###### change structure @@@@@@@@@@@@@@@@@@@@
+
+    def searchUserWithSubreddit():
+        if((len(usertoTrackEntry.get())!=0) and (len(subredditTrackEntry.get()) != 0)):
+            print("hey")
+            reddit = praw.Reddit('reddit-configuration-bot1')
+            subreddit = reddit.subreddit(str(subredditTrackEntry.get()))
+            username=str(usertoTrackEntry.get())
+            results = list(subreddit.search('author:{}'.format(username), time_filter='day'))
+            #############might need to change to submission
+            for submission in results:
+                print(" ID: ", submission.id)
+                print("  Title: ", submission.title)
+                print("  Name: ", submission.name)
+                print("  Display Name: ", subreddit.display_name)
+                print("  Over 18: ", subreddit.over18)
+               # print("time:", datetime.fromtimestamp(submission.created_utc))
+
+            
+        else:
+            if(len(usertoTrackEntry.get())==0):
+                userExistLabel.configure(text="Please Enter Username.", fg="#AEB6BF")
+            if(len(subredditTrackEntry.get()) == 0):
+                subredditExistsLabel.configure(text="Please Enter Subreddit.", fg="#AEB6BF")
+
+
+
+
+    emptyLabel1 = Label(editor, text="")
+    emptyLabel1.grid(row=7, column=0)
+    emptyLabel2 = Label(editor, text="")
+    emptyLabel2.grid(row=8, column=0)
+    searchButton = Button(editor, text="Search All",command = searchUserWithSubreddit)
+    searchButton.grid(row=9, column=1)
+    #text_area = scrolledtext.ScrolledText(editor, width=50, height=30, font=("Times New Roman", 15), bg="light cyan")
+    #text_area.grid(row=10, column=0, pady=10, padx=10 ,sticky="nsew")
 
     root.destroy()
 
