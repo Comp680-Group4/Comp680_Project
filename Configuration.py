@@ -134,7 +134,9 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
             reddit = praw.Reddit('reddit-configuration-bot1')
             subreddit = reddit.subreddit(str(subredditTrackEntry.get()))
             username=str(usertoTrackEntry.get())
-            results = list(subreddit.search('author:{}'.format(username), time_filter='day'))
+            ####### add button for time #########
+            timeFiltter='day'
+            results = list(subreddit.search('author:{}'.format(username), time_filter=timeFiltter))
             #############might need to change to submission
             for submission in results:
                 print(" ID: ", submission.id)
@@ -151,8 +153,7 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
             if(len(subredditTrackEntry.get()) == 0):
                 subredditExistsLabel.configure(text="Please Enter Subreddit.", fg="#AEB6BF")
 
-
-
+       
 
     emptyLabel1 = Label(editor, text="")
     emptyLabel1.grid(row=7, column=0)
@@ -162,6 +163,13 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
     searchButton.grid(row=9, column=1)
     #text_area = scrolledtext.ScrolledText(editor, width=50, height=30, font=("Times New Roman", 15), bg="light cyan")
     #text_area.grid(row=10, column=0, pady=10, padx=10 ,sticky="nsew")
+
+    def prevPage():
+        editor.destroy()
+        import Configuration
+
+    backButton = Button(editor, text="Previous Page", command=prevPage)
+    backButton.grid(row=9, column=0)
 
     root.destroy()
 
