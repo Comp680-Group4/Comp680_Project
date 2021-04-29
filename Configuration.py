@@ -4,6 +4,7 @@ import SubredditSearch
 import UserKeywordUsage
 import UserActivityTracker
 
+#######Can use this function to take in all user data to log in to your reddit account
 def loginToRedditAccount(clientID, clientSecret, username, password, userAgent, functionToRun):
     ### If any user fields are empty, don't attempt to execute
     if(not(len(clientID) > 0) or not(len(clientSecret) > 0) or not(len(username) > 0) or not(len(password) > 0) or not(len(userAgent) > 0)):
@@ -11,6 +12,9 @@ def loginToRedditAccount(clientID, clientSecret, username, password, userAgent, 
     ##Run whatever Reddit tracking function was passed
     functionToRun(clientID, clientSecret, username, password, userAgent)
 
+
+##### JOSH Implementation - will call into UserKeywordUsage to track how many times a  "bag of words" is used
+# in a user comment history
 def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, userAgent):
     #1st Button in main window
     #This will open up window to input stuff for the mechanic "Track User Keyword Usage"
@@ -57,6 +61,10 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
 
     root.destroy()
 
+
+
+#### ARAHIKT part - tracks user activity in a specific subreddit. Will call into SubredditSearch to create that object
+# and do the work
 def createNewWindowActivityTracking(clientID, clientSecret, username, password, userAgent):
     #2nd Button in main window
 
@@ -90,59 +98,17 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
 
     root.destroy()
 
-def createNewWindowSubredditActivity(clientID, clientSecret, username, password, userAgent):
+####SEVAK PART - will call into UserActivityTracker Class - track how many times users post over past X days.
+#### UserActivityTracker needs to output a bar graph/histogram type graph to visually show this data
+def createNewWindowTrackUserActivity(clientID, clientSecret, username, password, userAgent):
     #3rd Button in main window
     global editor
     editor = Tk()
-    editor.title('Track User Keyword Usage')
+    editor.title('Track User Activity Over Time')
     editor.geometry("600x300")
 
 
-    clientIdLabel = Label(editor, text="Enter Client ID:").grid(row=0, column=0)
-    clientIdEntry = Entry(editor, width=30, borderwidth=5)
-    clientIdEntry.grid(row=0, column=1)
-    clientIdEntry.insert(0, "J8BdcKH3pAoZ5g")
 
-    clientSecretLabel = Label(editor, text="Enter Client Secret:").grid(row=1, column=0)
-    clientSecretEntry = Entry(editor, width=30, borderwidth=5)
-    clientSecretEntry.grid(row=1, column=1)
-    clientSecretEntry.insert(0, "XSYxzeI8w-qQTFBJxraUHdzarAelOQ")
-
-    usernameLabel = Label(editor, text="Enter Username:").grid(row=2, column=0)
-    usernameEntry = Entry(editor, width=30, borderwidth=5)
-    usernameEntry.grid(row=2, column=1)
-    usernameEntry.insert(0, "FallenGalaxies123")
-
-    passwordLabel = Label(editor, text="Enter Password:").grid(row=3, column=0)
-    passwordEntry = Entry(editor, width=30, borderwidth=5)
-    passwordEntry.grid(row=3, column=1)
-    passwordEntry.insert(0, "Cronosphere123!")
-
-    userAgentLabel = Label(editor, text="Enter User Agent:").grid(row=4, column=0)
-    userAgentEntry = Entry(editor, width=30, borderwidth=5)
-    userAgentEntry.grid(row=4, column=1)
-    userAgentEntry.insert(0, "comp680project")
-
-    subredditNameLabel = Label(editor, text="Enter Subreddit Name:").grid(row=6, column=0)
-    subredditNameEntry = Entry(editor, width=30, borderwidth=5)
-    subredditNameEntry.grid(row=6, column=1)
-    subredditNameEntry.insert(0, "python")
-
-    subredditCategoryLabel = Label(editor, text="Enter Subreddit Category:").grid(row=7, column=0)
-    subredditCategoryEntry = Entry(editor, width=30, borderwidth=5)
-    subredditCategoryEntry.grid(row=7, column=1)
-    subredditCategoryEntry.insert(0, "hot")
-
-    submissionLimitLabel = Label(editor, text="Enter Submission Limit:").grid(row=8, column=0)
-    submissionLimitEntry = Entry(editor, width=30, borderwidth=5)
-    submissionLimitEntry.grid(row=8, column=1)
-    submissionLimitEntry.insert(0, "5")
-
-    #print(clientIdEntry.get())
-    r = SubredditSearch.Reddit(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get()))
-
-    buttonSubmissionActivity = Button(editor, text="Fetch Posts", command=lambda: r.searchSubreddit(str(subredditNameEntry.get()), str(subredditCategoryEntry.get()), int(submissionLimitEntry.get()))).grid(row=9,
-                                                                                                             column=2)
 
     root.destroy()
 
