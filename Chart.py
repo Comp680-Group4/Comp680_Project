@@ -31,4 +31,3 @@ def createPieGraph(wordsDict):
     plt.pie(occurrences, labels=words, explode=myExplode, shadow=True)
     plt.legend
     plt.show()
-    z = "hi"

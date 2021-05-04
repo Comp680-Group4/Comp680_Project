@@ -67,15 +67,4 @@ class UserKeywordUsage:
         #print("Called into function for tracking user keyword usage!")
 
     def countOccurences(self, str, word):
-        # split the string by spaces in a
-        a = str.split(" ")
-
-        # search for pattern in a
-        count = 0
-        for i in range(0, len(a)):
-
-            # if match found increase count
-            if (word.lower() == a[i].lower()):
-                count = count + 1
-
-        return count
+        return str.lower().count(word)
