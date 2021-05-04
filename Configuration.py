@@ -5,6 +5,7 @@ from numpy.distutils.tests.test_exec_command import emulate_nonposix
 import SubredditSearch
 import UserKeywordUsage
 import UserActivityTracker
+from datetime import *
 
 #######Can use this function to take in all user data to log in to your reddit account
 def loginToRedditAccount(clientID, clientSecret, username, password, userAgent, functionToRun):
@@ -145,11 +146,10 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
         text_area.delete('1.0', END)
         if((len(usertoTrackEntry.get())!=0) and (len(subredditTrackEntry.get()) != 0)):
            print("user exists:", userExists)
-           #executeUserTracking()
-           #executeSubredditTracking()
+           executeUserTracking()
+           executeSubredditTracking()
            if (userExistLabel.cget("text")=="User exists.     ") & ( subredditExistsLabel.cget("text")=="Subreddit exists.    "):
 
-                print("hey")
                 reddit = praw.Reddit('reddit-configuration-bot1')
                 subreddit = reddit.subreddit(str(subredditTrackEntry.get()))
                 username=str(usertoTrackEntry.get())
@@ -165,7 +165,9 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
                         text_area.insert(INSERT, "Title:  \n" + submission.title + "\n")
                         if(len(submission.selftext)!= 0):
                             text_area.insert(INSERT, "\n" + "Text: \n" + submission.selftext + "\n")
-                        text_area.insert(INSERT, "\n" + "Score: \n" + str(submission.score) + "\n *********************\n")
+                        dateAndTime = submission.created_utc
+                        text_area.insert(INSERT,"\n" + "Date and Time: "+ datetime.fromtimestamp(dateAndTime).replace(tzinfo=timezone.utc).strftime("%m/%d/%Y %I:%M:%S %p %Z"))
+                        text_area.insert(INSERT,"\n" + "Score: " + str(submission.score) + "\n *********************\n")
 
                 else:
                     text_area.insert(INSERT, 'User Name:  {} did not post in {} in a {}!'.format(username, subreddit.display_name, timeFiltter)+"\n")
@@ -189,7 +191,7 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
 
     def prevPage():
         editor.destroy()
-        import Configuration
+        #import Configuration
 
     backButton = Button(editor, text="Previous Page", command=prevPage)
     backButton.grid(row=9, column=0)
@@ -211,7 +213,62 @@ def createNewWindowTrackUserActivityOverTime(clientID, clientSecret, username, p
     editor = Tk()
     editor.title('Track User Activity Over Time')
     editor.geometry("600x300")
+    reddit = praw.Reddit('reddit-configuration-bot1')
 
+
+    userToTrack = Label(editor, text="Username To Track:").grid(row=0, column=0, sticky=E, pady=15, padx=15)
+    usertoTrackEntry = Entry(editor, width=35, borderwidth=5)
+    usertoTrackEntry.grid(row=0, column=1, sticky=W)
+    usertoTrackEntry.insert(0, "")
+    userExistLabel = Label(editor, text="")
+    userExistLabel.grid(row=1, column=0, sticky=E)
+    def executeUserTracking():
+        if (len(usertoTrackEntry.get()) != 0):
+
+            reddit = SubredditSearch.SubredditSearch(clientID, clientSecret, username, password, userAgent)
+
+            userExists = reddit.searchUserExists(str(usertoTrackEntry.get()))
+
+            if (userExists == False):
+                userExistLabel.configure(text="User not found.    ", fg="#AEB6BF")
+            else:
+                userExistLabel.configure(text="User exists.     ", fg="#AEB6BF")
+                userExists = True
+        else:
+            userExistLabel.configure(text="Please Enter Username.", fg="#AEB6BF")
+
+    searchButtonUser = Button(editor, text="Search user", command=executeUserTracking)
+    searchButtonUser.grid(row=2, column=1, sticky=W)
+
+    timeframeLabel = Label(editor, text="Enter Timeframe:").grid(row=3, column=0, sticky=E, pady=15, padx=15)
+    timeframeEntry= Entry(editor, width=35, borderwidth=5)
+    timeframeEntry.grid(row=3, column=1, sticky=W)
+    timeframeLabel = Label(editor, text="")
+    timeframeLabel.grid(row=4, column=0, sticky=E)
+    def search():
+        counter=0
+        if(timeframeEntry.get()== "hour" or timeframeEntry.get()== "day" or timeframeEntry.get()== "week" or timeframeEntry.get()== "month"or timeframeEntry.get()== "all"):
+            timeframeLabel.configure(text="")
+            text_area.insert(INSERT, "User Name:  " + usertoTrackEntry.get() + "\n\n")
+            for submission in reddit.redditor(usertoTrackEntry.get()).comments.top(str(timeframeEntry.get())):
+                counter = counter + 1
+                print(counter,":  " ,submission.body)
+                text_area.insert(INSERT, str(counter) +  ":  ")
+                text_area.insert(INSERT, submission.body + "\n")
+                dateAndTime = submission.created_utc
+                text_area.insert(INSERT, "\n" + "Date and Time: " + datetime.fromtimestamp(dateAndTime).replace(
+                    tzinfo=timezone.utc).strftime("%m/%d/%Y %I:%M:%S %p %Z")+"\n\n\n")
+
+        else:
+            timeframeLabel.configure(text="please enter hour, day, month or all!")
+
+    searchButton = Button(editor, text="Search", command=search)
+    searchButton.grid(row=4, column=1, sticky=W)
+    text_area_frame = Frame(editor)
+    text_area_frame.grid(row=5, column=0, columnspan=2)
+
+    text_area = scrolledtext.ScrolledText(text_area_frame, width=60, height=19)
+    text_area.grid(row=0, column=0, pady=15, padx=15)
 
     #######Find the user
     #label
