@@ -32,12 +32,12 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
     usertoTrackEntry.insert(0, "")
 
     global i
-    i = 0
+    i = 1
     listWordBoxes = []
 
     def createNewTextBox(ind):
         keyword = Entry(editor, width=30, borderwidth=5)
-        keyword.grid(row=ind, column=3)
+        keyword.grid(row=ind, column=1)
         keyword.insert(0, "")
         listWordBoxes.append(keyword)
         global i
@@ -49,13 +49,13 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
             wordsDict[str(w.get())] = 0
             #listWords.append(str(w.get()))
 
-        reddit = UserKeywordUsage.UserKeywordUsage(clientID, clientSecret, username, password, userAgent, str(usertoTrackEntry.get()))
+        reddit = UserKeywordUsage.UserKeywordUsage(clientID, clientSecret, username, password, userAgent, str(usertoTrackEntry.get()), editor)
         reddit.searchTrackUserKeywordUsage(wordsDict)
 
 
 
     buttonKeywordUsage = Button(editor, text="+",
-                                command= lambda: createNewTextBox(i)).grid(row=1, column=2)
+                                command= lambda: createNewTextBox(i)).grid(row=2, column=0)
 
     buttonExecuteTracking = Button(editor, text="Track Keywords:",
                                 command= executeTracking).grid(row=2, column=5)
