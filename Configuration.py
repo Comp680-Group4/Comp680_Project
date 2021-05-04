@@ -33,7 +33,7 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
     usertoTrackEntry.insert(0, "")
 
     global i
-    i = 1
+    i = 3
     listWordBoxes = []
 
     def createNewTextBox(ind):
