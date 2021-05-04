@@ -73,87 +73,112 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
     global editor
     editor = Tk()
     editor.title('Track User Activity')
-    editor.geometry("400x600")
-
-    userToTrack = Label(editor, text="Username To Track:").grid(row=0, column=0)
-    usertoTrackEntry = Entry(editor, width=30, borderwidth=5)
-    usertoTrackEntry.grid(row=0, column=1)
+    editor.geometry("650x750")
+    global subredditExists
+    subredditExists = False
+    global userExists
+    userExists = False
+    userToTrack = Label(editor, text="Username To Track:").grid(row=0, column=0, sticky= E, pady=15,padx=15)
+    usertoTrackEntry = Entry(editor, width=35, borderwidth=5)
+    usertoTrackEntry.grid(row=0, column=1, sticky= W)
     usertoTrackEntry.insert(0, "")
     userExistLabel = Label(editor, text="")
-    userExistLabel.grid(row=1, column=0)
+    userExistLabel.grid(row=1, column=0,sticky=E)
+    emptyLabel0 = Label(editor, text="")
+    emptyLabel0.grid(row=0, column=3)
 
     def executeUserTracking():
         if(len(usertoTrackEntry.get())!=0):
 
             reddit =SubredditSearch.SubredditSearch(clientID, clientSecret, username, password, userAgent)
-            userExists=reddit.searchUserExists(str(usertoTrackEntry.get()))
+
+            userExists= reddit.searchUserExists(str(usertoTrackEntry.get()))
 
             if (userExists == False):
-                userExistLabel.configure(text="User not found.", fg="#AEB6BF")
+                userExistLabel.configure(text="User not found.    ", fg="#AEB6BF")
             else:
-                userExistLabel.configure(text="User exists.", fg="#AEB6BF")
+                userExistLabel.configure(text="User exists.     ", fg="#AEB6BF")
+                userExists=True
         else:
             userExistLabel.configure(text="Please Enter Username.",fg="#AEB6BF" )
 
 
     searchButtonUser = Button(editor,text = "Search user", command= executeUserTracking)
-    searchButtonUser.grid(row=2,column=1)
+    searchButtonUser.grid(row=2,column=1,sticky=W)
 
     emptyLabel= Label(editor, text="")
     emptyLabel.grid(row=3, column=0)
+
     subredditLabel = Label(editor, text="Subreddit To Search:")
-    subredditLabel.grid(row=4, column=0)
-    subredditTrackEntry = Entry (editor, width=30, borderwidth=5)
-    subredditTrackEntry.grid(row=4, column=1)
+    subredditLabel.grid(row=4, column=0,sticky= E, pady=15,padx=15)
+
+    subredditTrackEntry = Entry (editor, width=35, borderwidth=5)
+    subredditTrackEntry.grid(row=4, column=1, sticky= W)
+
     subredditTrackEntry.insert(0, "")
     subredditExistsLabel =Label (editor,text="")
-    subredditExistsLabel.grid(row=5, column=0)
+    subredditExistsLabel.grid(row=5, column=0,sticky=E)
 
 
     def executeSubredditTracking():
         if (len(subredditTrackEntry.get()) != 0):
 
             reddit = SubredditSearch.SubredditSearch(clientID, clientSecret, username, password, userAgent)
-            subredditExists = reddit.searchSubredditExists(str(subredditTrackEntry.get()))
+
+            subredditExists= reddit.searchSubredditExists(str(subredditTrackEntry.get()))
 
             if (subredditExists == False):
-                subredditExistsLabel.configure(text="Subreddit not found.", fg="#AEB6BF")
+                subredditExistsLabel.configure(text="Subreddit not found.    ", fg="#AEB6BF")
             else:
-                subredditExistsLabel.configure(text="Subreddit exists.", fg="#AEB6BF")
+                subredditExistsLabel.configure(text="Subreddit exists.    ", fg="#AEB6BF")
+                subredditExists= True
         else:
             subredditExistsLabel.configure(text="Please Enter Subreddit.", fg="#AEB6BF")
 
     searchButtonSubreddit = Button(editor , text= "Search Subreddit", command = executeSubredditTracking)
-    searchButtonSubreddit.grid(row=6, column = 1)
+    searchButtonSubreddit.grid(row=6, column = 1, sticky=W)
 
 ###### change structure @@@@@@@@@@@@@@@@@@@@
 
-    def searchUserWithSubreddit():
-        if((len(usertoTrackEntry.get())!=0) and (len(subredditTrackEntry.get()) != 0)):
-            print("hey")
-            reddit = praw.Reddit('reddit-configuration-bot1')
-            subreddit = reddit.subreddit(str(subredditTrackEntry.get()))
-            username=str(usertoTrackEntry.get())
-            ####### add button for time #########
-            timeFiltter='day'
-            results = list(subreddit.search('author:{}'.format(username), time_filter=timeFiltter))
-            #############might need to change to submission
-            for submission in results:
-                print(" ID: ", submission.id)
-                print("  Title: ", submission.title)
-                print("  Name: ", submission.name)
-                print("  Display Name: ", subreddit.display_name)
-                print("  Over 18: ", subreddit.over18)
-               # print("time:", datetime.fromtimestamp(submission.created_utc))
 
-            
+    def searchUserWithSubreddit():
+        text_area.delete('1.0', END)
+        if((len(usertoTrackEntry.get())!=0) and (len(subredditTrackEntry.get()) != 0)):
+           print("user exists:", userExists)
+           #executeUserTracking()
+           #executeSubredditTracking()
+           if (userExistLabel.cget("text")=="User exists.     ") & ( subredditExistsLabel.cget("text")=="Subreddit exists.    "):
+
+                print("hey")
+                reddit = praw.Reddit('reddit-configuration-bot1')
+                subreddit = reddit.subreddit(str(subredditTrackEntry.get()))
+                username=str(usertoTrackEntry.get())
+                ####### add button for time #########
+                timeFiltter='day'
+                results = list(subreddit.search('author:{}'.format(username), time_filter=timeFiltter))
+                #############might need to change to submission
+                if results:
+                    for submission in results:
+                        print('{} did post in {} {}!'.format(username, subreddit.display_name, timeFiltter))
+
+                        text_area.insert(INSERT, "User Name:  " + username + "\n\n")
+                        text_area.insert(INSERT, "Title:  \n" + submission.title + "\n")
+                        if(len(submission.selftext)!= 0):
+                            text_area.insert(INSERT, "\n" + "Text: \n" + submission.selftext + "\n")
+                        text_area.insert(INSERT, "\n" + "Score: \n" + str(submission.score) + "\n *********************\n")
+
+                else:
+                    text_area.insert(INSERT, 'User Name:  {} did not post in {} in a {}!'.format(username, subreddit.display_name, timeFiltter)+"\n")
+           else:
+               text_area.insert(INSERT, "User or Subreddit does not exist.")
+
         else:
             if(len(usertoTrackEntry.get())==0):
                 userExistLabel.configure(text="Please Enter Username.", fg="#AEB6BF")
             if(len(subredditTrackEntry.get()) == 0):
                 subredditExistsLabel.configure(text="Please Enter Subreddit.", fg="#AEB6BF")
 
-       
+
 
     emptyLabel1 = Label(editor, text="")
     emptyLabel1.grid(row=7, column=0)
@@ -161,8 +186,6 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
     emptyLabel2.grid(row=8, column=0)
     searchButton = Button(editor, text="Search All",command = searchUserWithSubreddit)
     searchButton.grid(row=9, column=1)
-    #text_area = scrolledtext.ScrolledText(editor, width=50, height=30, font=("Times New Roman", 15), bg="light cyan")
-    #text_area.grid(row=10, column=0, pady=10, padx=10 ,sticky="nsew")
 
     def prevPage():
         editor.destroy()
@@ -170,6 +193,13 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
 
     backButton = Button(editor, text="Previous Page", command=prevPage)
     backButton.grid(row=9, column=0)
+
+    text_area_frame = Frame(editor)
+    text_area_frame.grid(row=10, column=0, columnspan=3)
+
+    text_area = scrolledtext.ScrolledText(text_area_frame, width=60, height=19, font=("Times New Roman", 13),bg="Alice blue")
+    text_area.grid(row=0, column=0, pady=15, padx=15)
+
 
     root.destroy()
 
@@ -183,7 +213,27 @@ def createNewWindowTrackUserActivityOverTime(clientID, clientSecret, username, p
     editor.geometry("600x300")
 
 
+    #######Find the user
+    #label
+    #Entry(to get user name)
+    #X=str(daysEntry.get())
+    #Button call tro function
+    #use my finction te search user
 
+    #def fun:
+
+
+    #numberOfDays=0
+    #daysEntry=Entry(to get the number of days from user)
+    #numberOfDays=str( daysEntry.get())
+    # Button call to function
+
+
+    #scrolledtext
+    #insert(sdvsvd)
+
+
+    #histogram
 
     root.destroy()
 
