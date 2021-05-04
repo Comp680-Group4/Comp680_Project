@@ -1,16 +1,19 @@
+from tkinter import *
+from tkinter import scrolledtext
 import praw
 import re
+import Chart
 
 
 class UserKeywordUsage:
-    def __init__(self, clientID, clientSecret, username, password, userAgent, userToTrack):
+    def __init__(self, clientID, clientSecret, username, password, userAgent, userToTrack, window):
         self.clientID = clientID
         self.clientSecret = clientSecret
         self.username = username
         self.password = password
         self.userAgent = userAgent
         self.userToTrack = userToTrack
-
+        self.window = window
         self.reddit = praw.Reddit(client_id = self.clientID, client_secret = self.clientSecret, username = self.username, password = self.password, user_agent = self.userAgent)
 
 
@@ -54,8 +57,11 @@ class UserKeywordUsage:
                 #wordIndex += 1
                 wordsDict[word] += i
 
-        print(*comments, sep="\n")
-        print(wordsDict)
+        #print(*comments, sep="\n")
+        #print(wordsDict)
+        Chart.createPieGraph(wordsDict)
+
+
         #comments = redditor.comments.new(limit=50)
         #print(person.link_karma)
         #print("Called into function for tracking user keyword usage!")
