@@ -130,7 +130,6 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
         else:
             userExistLabel.configure(text="Please Enter Username.",fg="#AEB6BF" )
 
-
     searchButtonUser = Button(editor,text = "Search user", command= executeUserTracking)
     searchButtonUser.grid(row=2,column=1,sticky=W)
 
@@ -165,9 +164,6 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
 
     searchButtonSubreddit = Button(editor , text= "Search Subreddit", command = executeSubredditTracking)
     searchButtonSubreddit.grid(row=7, column = 1, sticky=W)
-
-###### change structure @@@@@@@@@@@@@@@@@@@@
-
 
     def searchUserWithSubreddit():
         text_area.delete('1.0', END)
@@ -236,8 +232,7 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
 
     root.destroy()
 
-####SEVAK PART - will call into UserActivityTracker Class - track how many times users post over past X days.
-#### UserActivityTracker needs to output a bar graph/histogram type graph to visually show this data
+####SEVAK PART -
 def createNewWindowTrackUserActivityOverTime(clientID, clientSecret, username, password, userAgent):
     #3rd Button in main window
     global editor
@@ -289,7 +284,6 @@ def createNewWindowTrackUserActivityOverTime(clientID, clientSecret, username, p
                 dateAndTime = submission.created_utc
                 text_area.insert(INSERT, "\n" + "Date and Time: " + datetime.fromtimestamp(dateAndTime).replace(
                     tzinfo=timezone.utc).strftime("%m/%d/%Y %I:%M:%S %p %Z")+"\n\n\n")
-
         else:
             timeframeLabel.configure(text="please enter hour, day, month or all!")
 
@@ -301,7 +295,6 @@ def createNewWindowTrackUserActivityOverTime(clientID, clientSecret, username, p
     text_area = scrolledtext.ScrolledText(text_area_frame, width=60, height=19)
     text_area.grid(row=0, column=0, pady=15, padx=15)
     root.destroy()
-
 
 
 ################ INITIAL WINDOW USER INTERFACE ##############################
