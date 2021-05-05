@@ -38,6 +38,13 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
     i = 3
     listWordBoxes = []
 
+    def prevPage():
+        editor.destroy()
+        import Configuration
+
+    backButton = Button(editor, text="Previous Page", command=prevPage)
+    backButton.grid(row=8, column=0)
+
     def createNewTextBox(ind):
         keyword = Entry(editor, width=30, borderwidth=5)
         keyword.grid(row=ind, column=1)
@@ -211,7 +218,7 @@ def createNewWindowActivityTracking(clientID, clientSecret, username, password, 
 
     def prevPage():
         editor.destroy()
-        #import Configuration
+        import Configuration
 
     backButton = Button(editor, text="Previous Page", command=prevPage)
     backButton.grid(row=9, column=0)
