@@ -349,11 +349,13 @@ clientIdLabel = Label(root, text="Enter Client ID:").grid(row=8, column=0)
 clientIdEntry = Entry(root, width=30, borderwidth=5)
 clientIdEntry.grid(row=8, column=1)
 clientIdEntry.insert(0, "J8BdcKH3pAoZ5g")
+clientIdEntry.config(show="*")
 
 clientSecretLabel = Label(root, text="Enter Client Secret:").grid(row=9, column=0)
 clientSecretEntry = Entry(root, width=30, borderwidth=5)
 clientSecretEntry.grid(row=9, column=1)
 clientSecretEntry.insert(0, "XSYxzeI8w-qQTFBJxraUHdzarAelOQ")
+clientSecretEntry.config(show="*")
 
 usernameLabel = Label(root, text="Enter Username:").grid(row=10, column=0)
 usernameEntry = Entry(root, width=30, borderwidth=5)
@@ -364,11 +366,13 @@ passwordLabel = Label(root, text="Enter Password:").grid(row=11, column=0)
 passwordEntry = Entry(root, width=30, borderwidth=5)
 passwordEntry.grid(row=11, column=1)
 passwordEntry.insert(0, "Cronosphere123!")
+passwordEntry.config(show="*")
 
 userAgentLabel = Label(root, text="Enter User Agent:").grid(row=12, column=0)
 userAgentEntry = Entry(root, width=30, borderwidth=5)
 userAgentEntry.grid(row=12, column=1)
 userAgentEntry.insert(0, "comp680project")
+userAgentEntry.config(show="*")
 
 root.mainloop()
 
