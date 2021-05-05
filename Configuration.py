@@ -31,6 +31,8 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
     usertoTrackEntry = Entry(editor, width=30, borderwidth=5)
     usertoTrackEntry.grid(row=0, column=1)
     usertoTrackEntry.insert(0, "")
+    userExistLabel = Label(editor, text="")
+    userExistLabel.grid(row=1, column=0, sticky=E)
 
     global i
     i = 3
@@ -54,6 +56,24 @@ def createNewWindowKeyWordUsage(clientID, clientSecret, username, password, user
         reddit.searchTrackUserKeywordUsage(wordsDict)
 
 
+
+    def executeUserTracking():
+        if (len(usertoTrackEntry.get()) != 0):
+
+            reddit = SubredditSearch.SubredditSearch(clientID, clientSecret, username, password, userAgent)
+
+            userExists = reddit.searchUserExists(str(usertoTrackEntry.get()))
+
+            if (userExists == False):
+                userExistLabel.configure(text="User not found.    ", fg="#AEB6BF")
+            else:
+                userExistLabel.configure(text="User exists.     ", fg="#AEB6BF")
+                userExists = True
+        else:
+            userExistLabel.configure(text="Please Enter Username.", fg="#AEB6BF")
+
+    searchButtonUser = Button(editor, text="Search user", command=executeUserTracking)
+    searchButtonUser.grid(row=2, column=1, sticky=W)
 
     buttonKeywordUsage = Button(editor, text="+",
                                 command= lambda: createNewTextBox(i)).grid(row=2, column=0)
