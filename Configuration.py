@@ -312,12 +312,12 @@ labelTrackSubmissionActivity = Label(root, text="Track User Activity Over Time")
 labelTrackSubmissionActivity.grid(row=0, column=2, padx=20)
 
 # Create Buttons to open up new window - will track keyword usage on user
-buttonKeywordUsage = Button(root, text="Click Me!",
+buttonKeywordUsage = Button(root, text="Search!",
                     command=lambda: loginToRedditAccount(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get()),
                     createNewWindowKeyWordUsage), bg="brown").grid(row=4, column=0)
 buttonUserActivity = Button(root, text="Search!", command=lambda: createNewWindowActivityTracking(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get())
                                                                                           ), bg="brown").grid(row=4, column=1)
-buttonSubmissionActivity = Button(root, text="Click Me!", command=lambda: createNewWindowTrackUserActivityOverTime(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get())), bg="brown").grid(row=4, column=2)
+buttonSubmissionActivity = Button(root, text="Search!", command=lambda: createNewWindowTrackUserActivityOverTime(str(clientIdEntry.get()), str(clientSecretEntry.get()), str(usernameEntry.get()), str(passwordEntry.get()), str(userAgentEntry.get())), bg="brown").grid(row=4, column=2)
 
 clientIdLabel = Label(root, text="Enter Client ID:").grid(row=8, column=0)
 clientIdEntry = Entry(root, width=30, borderwidth=5)
